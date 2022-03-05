@@ -241,7 +241,7 @@ watch(
         :placeholder="t('input.placeholder')"
       />
       <div
-        v-if="errorMsg != ''"
+        v-if="errorMsg != '' && inputValue.replace(/\s/g,'') != ''"
         class="inner-wrapper error-wrapper"
         :data-title="t('parser.error.title')"
       >
