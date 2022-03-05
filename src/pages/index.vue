@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref, watch, reactive, computed } from 'vue';
+import { ref, watch, reactive, computed, Ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useStore } from '../store';
 import antlr4 from 'antlr4';
@@ -7,6 +7,7 @@ import { ErrorListener } from 'antlr4/src/antlr4/error';
 import LogicLexer from '../utils/LogicLexer.js';
 import LogicParser from '../utils/LogicParser.js';
 import LogicListener from '../utils/LogicListener.js';
+import TruthTable from '../components/TruthTable.vue';
 
 const { t } = useI18n();
 
@@ -15,7 +16,7 @@ const store = useStore();
 const inputValue = ref('');
 
 const RawTokens = ref([]);
-const RawTree = ref('');
+const RawTree = ref(false) as Ref<Boolean | Object>;
 
 const inDebugMode = computed(() => store.$state.inDebugMode);
 
@@ -63,7 +64,7 @@ class CustomErrorListener extends ErrorListener {
         text: 'parser.error.syntax',
         params: { column, msg },
       };
-    },10);
+    }, 10);
   }
 }
 const errorListener = new CustomErrorListener();
@@ -119,6 +120,7 @@ class VariableCount extends LogicListener {
     usedVaribles.value = [];
     usedParSubsequences = [];
     subsequencesResult.value = [];
+    RawTree.value = false;
     finalResult.splice(0);
     usedSubsequences.splice(0);
     finalFunctionStr = `let data=values;\n`;
@@ -208,7 +210,7 @@ watch(
       errorMsg.value = '';
       try {
         inputValue.value = handleInputNotions(inputValue.value);
-        if (inputValue.value.replace(/\s/g, '') == '') return;
+        //if (inputValue.value.replace(/\s/g, '') == '') return;
         const chars = new antlr4.InputStream(
           inputValue.value.replace(/\s/g, ''),
         );
@@ -220,7 +222,7 @@ watch(
         //parser.buildParseTrees = true;
         const tree = parser.prog();
         antlr4.tree.ParseTreeWalker.DEFAULT.walk(variableCount, tree);
-        RawTree.value = tree.toStringTree();
+        RawTree.value = tree;
       } catch (error) {
         errorMsg.value = error.message;
         console.error(error);
@@ -289,58 +291,28 @@ watch(
               subsequence
             }}</span>
           </p>
-          <p class="whitespace-pre-wrap">
-            {{ RawTree }}
+          <p class="used-subsequences">
+            {{ t('parser.tree') }}
+          <span v-if="!RawTree">{{ t('parser.used-var.empty') }}</span>
+          <ul v-if="RawTree">
+            <Tree :item="RawTree.children[0]" />
+          </ul>
           </p>
+          
         </div>
       </div>
     </div>
     <div class="right">
       <div class="inner-wrapper table-wrapper" :data-title="t('table.title')">
         <div class="scroll-wrapper">
-          <table v-if="errorMsg == '' && inputValue.replace(/\s/g, '') != ''">
-            <thead>
-              <tr>
-                <th
-                  v-for="variable of usedVaribles"
-                  :key="variable"
-                  class="level-1"
-                >
-                  {{ variable }}
-                </th>
-                <template v-if="store.$state.showIntermediateProcesses">
-                  <th
-                    v-for="subsequenceName of subsequencesResult"
-                    :key="subsequenceName"
-                    class="level-2"
-                  >
-                    {{ subsequenceName }}
-                  </th>
-                </template>
-                <th class="level-3">
-                  {{ inputValue.replace(/\s/g, '') }}
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="result of finalResult">
-                <td v-for="variable of usedVaribles" class="level-1">
-                  {{ result.values[variable] }}
-                </td>
-                <template v-if="store.$state.showIntermediateProcesses">
-                  <td
-                    v-for="subsequenceName of subsequencesResult"
-                    class="level-2"
-                  >
-                    {{ result.values[subsequenceName] }}
-                  </td>
-                </template>
-                <td class="level-3">
-                  {{ result.values[inputValue.replace(/\s/g, '')] }}
-                </td>
-              </tr>
-            </tbody>
-          </table>
+          <TruthTable
+            v-if="errorMsg == '' && inputValue.replace(/\s/g, '') != ''"
+            :usedVaribles="usedVaribles"
+            :subsequencesResult="subsequencesResult"
+            :showIntermediateProcesses="store.$state.showIntermediateProcesses"
+            :inputValue="inputValue"
+            :finalResult="finalResult"
+          />
         </div>
       </div>
     </div>
@@ -414,7 +386,7 @@ watch(
 }
 
 .scroll-wrapper {
-  @apply overflow-y-auto max-h-80;
+  @apply overflow-y-auto max-h-180;
 }
 
 .used-subsequences,
@@ -432,51 +404,5 @@ watch(
 }
 .table-wrapper .scroll-wrapper {
   @apply max-h-200  rounded-lg;
-}
-
-table {
-  @apply table-auto min-w-full max-h-10 overflow-y-scroll;
-  @apply rounded-lg;
-  border-collapse: separate;
-  border-spacing: 0px 5px;
-}
-
-th,
-td {
-  @apply min-w-6 text-center px-2;
-  @apply space-y-1;
-}
-
-th.level-1,
-td.level-1 {
-  @apply bg-purple-300/50 dark:bg-dark-900/50;
-}
-
-th.level-2,
-td.level-2 {
-  @apply bg-purple-300/70 dark:bg-dark-900/70;
-}
-
-th.level-3,
-td.level-3 {
-  @apply bg-purple-300/90 dark:bg-dark-900/90;
-}
-
-td:first-child,
-th:first-child {
-  @apply rounded-l-lg;
-}
-
-td:last-child,
-th:last-child {
-  @apply rounded-r-lg;
-}
-
-th {
-  @apply sticky top-0 rounded-none;
-}
-
-tbody {
-  @apply max-h-10 overflow-y-scroll;
 }
 </style>

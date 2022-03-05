@@ -20,5 +20,7 @@
   "parser.used-var": "Used Variables: ",
   "parser.used-var.empty": "EMPTY",
   "parser.used-subsequence": "Used Subsequences: ",
-  "table.title": "Truth Table"
+  "table.title": "Truth Table",
+  "parser.tree": "AST Tree: ",
+  "tree.unknown": "UNKNOWN"
 }
