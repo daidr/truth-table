@@ -24,13 +24,13 @@ const errorMsgData = ref({ text: '', params: {} });
 
 const handleInputNotions = (value: string): string => {
   return value
-    .replace(/[!！]/g, '¬')
+    .replace(/[!！┐]/g, '¬')
     .replace(/[》>]/g, '→')
     .replace(/[【{\[（]/g, '(')
     .replace(/[】}\]）]/g, ')')
-    .replace(/[=]/g, '⇔')
-    .replace(/[&^]/g, '⋀')
-    .replace(/[|]/g, '⋁')
+    .replace(/[=↔]/g, '⇔')
+    .replace(/[&^∧]/g, '⋀')
+    .replace(/[|∨]/g, '⋁')
     .replace(/\s{2,}/g, '')
     .replace(/[^A-Za-z ¬→⇔⋀⋁()]/g, '')
     .trimStart();
