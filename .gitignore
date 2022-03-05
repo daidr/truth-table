@@ -4,4 +4,4 @@ dist
 dist-ssr
 *.local
 
-./pnpm-lock.yaml
+pnpm-lock.yaml
