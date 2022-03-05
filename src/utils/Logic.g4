@@ -3,13 +3,13 @@ grammar Logic;
 prog: expr | EOF;
 
 expr:
-	op = REVERSE expr				# Reverse
-	| expr op = CONJUNCTION expr	# Conjunction
-	| expr op = DISJUNCTION expr	# Disjunction
-	| expr op = IMPLICATION expr	# Implication
-	| expr op = EQUIVALENCE expr	# Equivalence
-	| VAR							# Variable
-	| '(' expr ')'					# Par;
+	op = REVERSE expr								# Reverse
+	| expr op = CONJUNCTION expr					# Conjunction
+	| expr op = DISJUNCTION expr					# Disjunction
+	| <assoc = right> expr op = IMPLICATION  expr	# Implication
+	| expr op = EQUIVALENCE expr					# Equivalence
+	| VAR											# Variable
+	| '(' expr ')'									# Par;
 
 VAR: [a-zA-Z]+;
 REVERSE: '\u00AC';

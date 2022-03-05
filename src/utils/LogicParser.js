@@ -23,7 +23,7 @@ const serializedATN = ["\u0003\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786",
     "\f\b\u0002\u0002\u0015\u0016\u0007\u0007\u0002\u0002\u0016!\u0005\u0004",
     "\u0003\t\u0017\u0018\f\u0007\u0002\u0002\u0018\u0019\u0007\b\u0002\u0002",
     "\u0019!\u0005\u0004\u0003\b\u001a\u001b\f\u0006\u0002\u0002\u001b\u001c",
-    "\u0007\t\u0002\u0002\u001c!\u0005\u0004\u0003\u0007\u001d\u001e\f\u0005",
+    "\u0007\t\u0002\u0002\u001c!\u0005\u0004\u0003\u0006\u001d\u001e\f\u0005",
     "\u0002\u0002\u001e\u001f\u0007\n\u0002\u0002\u001f!\u0005\u0004\u0003",
     "\u0006 \u0014\u0003\u0002\u0002\u0002 \u0017\u0003\u0002\u0002\u0002",
     " \u001a\u0003\u0002\u0002\u0002 \u001d\u0003\u0002\u0002\u0002!$\u0003",
@@ -220,7 +220,7 @@ export default class LogicParser extends antlr4.Parser {
 	                    this.state = 25;
 	                    localctx.op = this.match(LogicParser.IMPLICATION);
 	                    this.state = 26;
-	                    this.expr(5);
+	                    this.expr(4);
 	                    break;
 
 	                case 4:
