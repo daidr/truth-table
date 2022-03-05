@@ -31,7 +31,7 @@ const handleInputNotions = (value: string): string => {
     .replace(/[=↔]/g, '⇔')
     .replace(/[&^∧]/g, '⋀')
     .replace(/[|∨]/g, '⋁')
-    .replace(/\s{2,}/g, '')
+    .replace(/\s{2,}/g, ' ')
     .replace(/[^A-Za-z ¬→⇔⋀⋁()]/g, '')
     .trimStart();
 };
@@ -98,7 +98,7 @@ const calcTruthTable = () => {
   keys = keys.filter(
     key =>
       !usedVaribles.value.includes(key) &&
-      key != inputValue.value &&
+      key != inputValue.value.replace(/\s/g, '') &&
       usedSubsequences.includes(key),
   );
   if (keys.length != 0) {
@@ -123,7 +123,7 @@ class VariableCount extends LogicListener {
   }
 
   exitProg(ctx) {
-    if (ctx.getText() !== inputValue.value) {
+    if (ctx.getText() !== inputValue.value.replace(/\s/g, '')) {
       errorMsg.value = 'handled error';
       errorMsgData.value = { text: 'parser.error.notvaild', params: {} };
       return;
@@ -206,7 +206,7 @@ watch(
       errorMsg.value = '';
       try {
         inputValue.value = handleInputNotions(inputValue.value);
-        if (inputValue.value.trim() == '') return;
+        if (inputValue.value.replace(/\s/g, '') == '') return;
         const chars = new antlr4.InputStream(
           inputValue.value.replace(/\s/g, ''),
         );
@@ -296,7 +296,7 @@ watch(
     <div class="right">
       <div class="inner-wrapper table-wrapper" :data-title="t('table.title')">
         <div class="scroll-wrapper">
-          <table v-if="errorMsg == '' && inputValue != ''">
+          <table v-if="errorMsg == '' && inputValue.replace(/\s/g, '') != ''">
             <thead>
               <tr>
                 <th
@@ -316,7 +316,7 @@ watch(
                   </th>
                 </template>
                 <th class="level-3">
-                  {{ inputValue }}
+                  {{ inputValue.replace(/\s/g, '') }}
                 </th>
               </tr>
             </thead>
@@ -334,7 +334,7 @@ watch(
                   </td>
                 </template>
                 <td class="level-3">
-                  {{ result.values[inputValue] }}
+                  {{ result.values[inputValue.replace(/\s/g, '')] }}
                 </td>
               </tr>
             </tbody>
