@@ -190,7 +190,7 @@ class VariableCount extends LogicListener {
     addSubsequences(ctx);
     finalFunctionStr += `data["${ctx.getText()}"] = Number(data["${ctx
       .expr(0)
-      .getText()}"] == data["${ctx.expr(1).getText()}"]);\n`;
+      .getText()}"] == 0 ? 1: data["${ctx.expr(1).getText()}"]);\n`;
   }
 }
 
