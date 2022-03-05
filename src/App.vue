@@ -4,7 +4,7 @@ import Footer from './components/Footer.vue';
 </script>
 
 <template>
-  <div class="container max-w-screen-2xl mx-auto min-h-95vh relative">
+  <div class="container max-w-screen-2xl mx-auto min-h-95vh relative pb-10">
     <Header />
     <router-view />
     <Footer />
