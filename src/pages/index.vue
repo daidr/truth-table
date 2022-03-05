@@ -96,7 +96,10 @@ const calcTruthTable = () => {
   if (finalResult.length == 0) return;
   let keys = Object.keys(finalResult[0].values);
   keys = keys.filter(
-    key => !usedVaribles.value.includes(key) && key != inputValue.value,
+    key =>
+      !usedVaribles.value.includes(key) &&
+      key != inputValue.value &&
+      usedSubsequences.includes(key),
   );
   if (keys.length != 0) {
     subsequencesResult.value = keys.sort(
