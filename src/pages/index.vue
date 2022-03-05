@@ -57,11 +57,13 @@ class CustomErrorListener extends ErrorListener {
   }
 
   syntaxError(recognizer, offendingSymbol, line, column, msg, e) {
-    errorMsg.value = 'handled error';
-    errorMsgData.value = {
-      text: 'parser.error.syntax',
-      params: { column, msg },
-    };
+    setTimeout(() => {
+      errorMsg.value = 'handled error';
+      errorMsgData.value = {
+        text: 'parser.error.syntax',
+        params: { column, msg },
+      };
+    },10);
   }
 }
 const errorListener = new CustomErrorListener();
