@@ -4,7 +4,7 @@ export const useStore = defineStore('main', {
   state: () => {
     return {
       layoutHorizontal: true,
-      inDebugMode: true,
+      inDebugMode: false,
       showIntermediateProcesses: true,
     };
   },
