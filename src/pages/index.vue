@@ -16,7 +16,13 @@ const store = useStore();
 const inputValue = ref('');
 
 const RawTokens = ref([]);
-const RawTree = ref(false) as Ref<Boolean | Object>;
+
+interface Tree {
+  getText: Function;
+  children?: Tree[];
+}
+
+const RawTree = ref(false) as Ref<Boolean | Tree>;
 
 const inDebugMode = computed(() => store.$state.inDebugMode);
 
@@ -295,7 +301,7 @@ watch(
             {{ t('parser.tree') }}
           <span v-if="!RawTree">{{ t('parser.used-var.empty') }}</span>
           <ul v-if="RawTree">
-            <Tree :item="RawTree.children[0]" />
+            <Tree :item="(RawTree as Tree).children[0]" />
           </ul>
           </p>
           
