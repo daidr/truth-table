@@ -1,0 +1,12 @@
+[build.environment]
+  NPM_FLAGS = "--prefix=/dev/null"
+  NODE_VERSION = "16"
+
+[build]
+  publish = "dist"
+  command = "pnpm build || ( npm install pnpm && pnpm build )"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

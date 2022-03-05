@@ -1,0 +1,9 @@
+body {
+  @apply transition;
+  @apply text-purple-600 dark:text-gray-200;
+  @apply bg-purple-50 dark:bg-gray-700;
+}
+
+* {
+  @apply box-border;
+}
