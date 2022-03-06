@@ -31,13 +31,13 @@ const errorMsgData = ref({ text: '', params: {} });
 
 const handleInputNotions = (value: string): string => {
   return value
-    .replace(/[!！┐]/g, '¬')
-    .replace(/[》>]/g, '→')
+    .replace(/[!！┐1]/g, '¬')
+    .replace(/[》>.。]/g, '→')
     .replace(/[【{\[（]/g, '(')
     .replace(/[】}\]）]/g, ')')
-    .replace(/[=↔]/g, '⇔')
-    .replace(/[&^∧]/g, '⋀')
-    .replace(/[|∨]/g, '⋁')
+    .replace(/[=↔+]/g, '⇔')
+    .replace(/[&^∧67]/g, '⋀')
+    .replace(/[|∨\\、]/g, '⋁')
     .replace(/\s{2,}/g, ' ')
     .replace(/[^A-Za-z ¬→⇔⋀⋁()]/g, '')
     .trimStart();
@@ -64,6 +64,7 @@ class CustomErrorListener extends ErrorListener {
   }
 
   syntaxError(recognizer, offendingSymbol, line, column, msg, e) {
+    console.log(recognizer,offendingSymbol,line,column,msg,e)
     setTimeout(() => {
       errorMsg.value = 'handled error';
       errorMsgData.value = {
@@ -259,18 +260,19 @@ watch(
         class="inner-wrapper"
         :data-title="t('lexer.title')"
       >
-        <div class="scroll-wrapper">
-          <p
+        <div class="scroll-wrapper text-sm">
+          <code
             v-for="(rawToken, index) of RawTokens"
             :key="index"
-            class="whitespace-pre-wrap"
+            class="whitespace-pre"
           >
             {{ t('lexer.startpos') }}
-            {{ rawToken.start.toString().padEnd(5) }}
-            {{ t('lexer.stoppos') }} {{ rawToken.stop.toString().padEnd(5) }}
-            {{ t('lexer.type') }} {{ rawToken.type.toString().padEnd(5) }}
+            {{ rawToken.start.toString().padEnd(3) }}
+            {{ t('lexer.stoppos') }} {{ rawToken.stop.toString().padEnd(3) }}
+            {{ t('lexer.type') }} {{ (rawToken.type==-1 ? 'EOF' : LogicParser.symbolicNames[rawToken.type]).padEnd(12) }}
             {{ t('lexer.value') }} {{ rawToken.text }}
-          </p>
+            <br />
+          </code>
         </div>
       </div>
       <div
@@ -299,7 +301,7 @@ watch(
           </p>
           <p class="used-subsequences">
             {{ t('parser.tree') }}
-          <span v-if="!RawTree">{{ t('parser.used-var.empty') }}</span>
+          <span v-if="!RawTree">&lt;EOF&gt;</span>
           <ul v-if="RawTree">
             <Tree :item="(RawTree as Tree).children[0]" />
           </ul>
@@ -392,7 +394,7 @@ watch(
 }
 
 .scroll-wrapper {
-  @apply overflow-y-auto max-h-180;
+  @apply overflow-auto max-h-180;
 }
 
 .used-subsequences,

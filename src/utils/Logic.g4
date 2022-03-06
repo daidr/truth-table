@@ -6,11 +6,13 @@ expr:
 	op = REVERSE expr								# Reverse
 	| expr op = CONJUNCTION expr					# Conjunction
 	| expr op = DISJUNCTION expr					# Disjunction
-	| <assoc = right> expr op = IMPLICATION  expr	# Implication
+	| <assoc = right> expr op = IMPLICATION expr	# Implication
 	| expr op = EQUIVALENCE expr					# Equivalence
 	| VAR											# Variable
-	| '(' expr ')'									# Par;
+	| LEFT_PAR expr RIGHT_PAR						# Par;
 
+LEFT_PAR: '(';
+RIGHT_PAR: ')';
 VAR: [a-zA-Z]+;
 REVERSE: '\u00AC';
 CONJUNCTION: '\u22C0';

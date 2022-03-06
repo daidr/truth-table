@@ -49,10 +49,11 @@ export default class LogicLexer extends antlr4.Lexer {
 	static modeNames = [ "DEFAULT_MODE" ];
 	static literalNames = [ null, "'('", "')'", null, "'\u00AC'", "'\u22C0'", 
                          "'\u22C1'", "'\u2192'", "'\u21D4'" ];
-	static symbolicNames = [ null, null, null, "VAR", "REVERSE", "CONJUNCTION", 
-                          "DISJUNCTION", "IMPLICATION", "EQUIVALENCE", "WS" ];
-	static ruleNames = [ "T__0", "T__1", "VAR", "REVERSE", "CONJUNCTION", "DISJUNCTION", 
-                      "IMPLICATION", "EQUIVALENCE", "WS" ];
+	static symbolicNames = [ null, "LEFT_PAR", "RIGHT_PAR", "VAR", "REVERSE", 
+                          "CONJUNCTION", "DISJUNCTION", "IMPLICATION", "EQUIVALENCE", 
+                          "WS" ];
+	static ruleNames = [ "LEFT_PAR", "RIGHT_PAR", "VAR", "REVERSE", "CONJUNCTION", 
+                      "DISJUNCTION", "IMPLICATION", "EQUIVALENCE", "WS" ];
 
     constructor(input) {
         super(input)
@@ -65,8 +66,8 @@ export default class LogicLexer extends antlr4.Lexer {
 }
 
 LogicLexer.EOF = antlr4.Token.EOF;
-LogicLexer.T__0 = 1;
-LogicLexer.T__1 = 2;
+LogicLexer.LEFT_PAR = 1;
+LogicLexer.RIGHT_PAR = 2;
 LogicLexer.VAR = 3;
 LogicLexer.REVERSE = 4;
 LogicLexer.CONJUNCTION = 5;

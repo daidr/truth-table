@@ -43,9 +43,9 @@ export default class LogicParser extends antlr4.Parser {
     static grammarFileName = "Logic.g4";
     static literalNames = [ null, "'('", "')'", null, "'\u00AC'", "'\u22C0'", 
                             "'\u22C1'", "'\u2192'", "'\u21D4'" ];
-    static symbolicNames = [ null, null, null, "VAR", "REVERSE", "CONJUNCTION", 
-                             "DISJUNCTION", "IMPLICATION", "EQUIVALENCE", 
-                             "WS" ];
+    static symbolicNames = [ null, "LEFT_PAR", "RIGHT_PAR", "VAR", "REVERSE", 
+                             "CONJUNCTION", "DISJUNCTION", "IMPLICATION", 
+                             "EQUIVALENCE", "WS" ];
     static ruleNames = [ "prog", "expr" ];
 
     constructor(input) {
@@ -94,7 +94,7 @@ export default class LogicParser extends antlr4.Parser {
 	        this.state = 6;
 	        this._errHandler.sync(this);
 	        switch(this._input.LA(1)) {
-	        case LogicParser.T__0:
+	        case LogicParser.LEFT_PAR:
 	        case LogicParser.VAR:
 	        case LogicParser.REVERSE:
 	            this.enterOuterAlt(localctx, 1);
@@ -156,16 +156,16 @@ export default class LogicParser extends antlr4.Parser {
 	            this.state = 11;
 	            this.match(LogicParser.VAR);
 	            break;
-	        case LogicParser.T__0:
+	        case LogicParser.LEFT_PAR:
 	            localctx = new ParContext(this, localctx);
 	            this._ctx = localctx;
 	            _prevctx = localctx;
 	            this.state = 12;
-	            this.match(LogicParser.T__0);
+	            this.match(LogicParser.LEFT_PAR);
 	            this.state = 13;
 	            this.expr(0);
 	            this.state = 14;
-	            this.match(LogicParser.T__1);
+	            this.match(LogicParser.RIGHT_PAR);
 	            break;
 	        default:
 	            throw new antlr4.error.NoViableAltException(this);
@@ -261,8 +261,8 @@ export default class LogicParser extends antlr4.Parser {
 }
 
 LogicParser.EOF = antlr4.Token.EOF;
-LogicParser.T__0 = 1;
-LogicParser.T__1 = 2;
+LogicParser.LEFT_PAR = 1;
+LogicParser.RIGHT_PAR = 2;
 LogicParser.VAR = 3;
 LogicParser.REVERSE = 4;
 LogicParser.CONJUNCTION = 5;
@@ -343,8 +343,16 @@ class ParContext extends ExprContext {
         super.copyFrom(ctx);
     }
 
+	LEFT_PAR() {
+	    return this.getToken(LogicParser.LEFT_PAR, 0);
+	};
+
 	expr() {
 	    return this.getTypedRuleContext(ExprContext,0);
+	};
+
+	RIGHT_PAR() {
+	    return this.getToken(LogicParser.RIGHT_PAR, 0);
 	};
 
 	enterRule(listener) {
