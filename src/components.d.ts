@@ -6,6 +6,7 @@ declare module 'vue' {
   export interface GlobalComponents {
     Footer: typeof import('./components/Footer.vue')['default']
     Header: typeof import('./components/Header.vue')['default']
+    TransitionHeight: typeof import('./components/TransitionHeight.vue')['default']
     Tree: typeof import('./components/Tree.vue')['default']
     TruthTable: typeof import('./components/TruthTable.vue')['default']
   }

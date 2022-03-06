@@ -410,6 +410,6 @@ watch(
   @apply px-4;
 }
 .table-wrapper .scroll-wrapper {
-  @apply max-h-200  rounded-lg;
+  @apply max-h-200 rounded-lg;
 }
 </style>

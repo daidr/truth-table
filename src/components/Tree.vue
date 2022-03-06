@@ -57,14 +57,16 @@ const toggle = () => {
           : item.getText()
       }}
     </div>
-    <ul v-if="isFolder" v-show="isOpen">
-      <Tree
-        class="item"
-        v-for="(child, index) in item.children"
-        :key="index"
-        :item="child"
-      ></Tree>
-    </ul>
+    <TransitionHeight v-if="isFolder" :show="isOpen">
+      <ul>
+        <Tree
+          class="item"
+          v-for="(child, index) in item.children"
+          :key="index"
+          :item="child"
+        ></Tree>
+      </ul>
+    </TransitionHeight>
   </li>
 </template>
 
@@ -96,6 +98,7 @@ const toggle = () => {
 
 ul {
   @apply pl-8 relative;
+  @apply flex flex-col gap-y-0.1px;
 }
 
 ul::after {
