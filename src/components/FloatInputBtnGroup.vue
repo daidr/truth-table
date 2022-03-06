@@ -105,7 +105,7 @@ watch(() => props.show, () => {
 
 <style scoped>
 .btn-group {
-    @apply opacity-0 pointer-events-none transition;
+    @apply opacity-0 pointer-events-none transition z-99;
     @apply touch-none;
     @apply fixed bottom-0 left-0 right-0 md:(bottom-auto left-1/4 right-auto);
     @apply p-2 gap-x-2;
