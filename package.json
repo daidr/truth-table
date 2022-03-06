@@ -12,8 +12,7 @@
     "global": "^4.4.0",
     "pinia": "^2.0.11",
     "vue": "^3.2.31",
-    "vue-i18n": "^9.1.9",
-    "vue-router": "^4.0.13"
+    "vue-i18n": "^9.1.9"
   },
   "devDependencies": {
     "@iconify/iconify": "^2.1.2",

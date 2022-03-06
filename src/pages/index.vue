@@ -1,13 +1,13 @@
 <script lang="ts" setup>
 import { ref, watch, reactive, computed, Ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useStore } from '../store';
+import { useStore } from '@/store';
 import antlr4 from 'antlr4';
 import { ErrorListener } from 'antlr4/src/antlr4/error';
-import LogicLexer from '../utils/LogicLexer.js';
-import LogicParser from '../utils/LogicParser.js';
-import LogicListener from '../utils/LogicListener.js';
-import TruthTable from '../components/TruthTable.vue';
+import LogicLexer from '@/utils/LogicLexer.js';
+import LogicParser from '@/utils/LogicParser.js';
+import LogicListener from '@/utils/LogicListener.js';
+import TruthTable from '@/components/TruthTable.vue';
 
 const { t } = useI18n();
 

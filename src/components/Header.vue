@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n';
-import { useTheme } from '/@/composables';
+import { useTheme } from '@/composables';
 import { Icon } from '@iconify/vue';
 import { useStore } from '../store';
 

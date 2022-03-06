@@ -14,7 +14,7 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '/@': resolve(__dirname, './src'),
+      '@': resolve(__dirname, './src'),
     },
   },
   plugins: [
@@ -28,9 +28,7 @@ export default defineConfig({
     }),
 
     // https://github.com/antfu/vite-plugin-windicss
-    WindiCSS({
-      safelist: 'prose prose-sm m-auto text-left',
-    }),
+    WindiCSS(),
 
     // https://github.com/antfu/purge-icons/tree/main/packages/vite-plugin-purge-icons
     PurgeIcons({
@@ -44,7 +42,7 @@ export default defineConfig({
   ],
 
   optimizeDeps: {
-    include: ['vue', 'vue-router', '@vueuse/core'],
+    include: ['vue', '@vueuse/core'],
     exclude: ['vue-demi'],
   },
 });
