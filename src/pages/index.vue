@@ -64,7 +64,6 @@ class CustomErrorListener extends ErrorListener {
   }
 
   syntaxError(recognizer, offendingSymbol, line, column, msg, e) {
-    console.log(recognizer,offendingSymbol,line,column,msg,e)
     setTimeout(() => {
       errorMsg.value = 'handled error';
       errorMsgData.value = {
