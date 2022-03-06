@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { onMounted, ref, watch } from 'vue';
+import { onMounted, onUnmounted, ref, watch } from 'vue';
 import { Icon } from '@iconify/vue';
 
 const emits = defineEmits(['input'])
@@ -65,6 +65,11 @@ const onMouseUp = () => {
 onMounted(() => {
     BtnGroupEl.value.style.top = window.innerHeight / 2 + 'px'
     BtnGroupEl.value.style.left = window.innerWidth / 4 + 'px'
+    document.addEventListener("pointermove", onMouseMove)
+})
+
+onUnmounted(() => {
+    document.removeEventListener("pointermove", onMouseMove)
 })
 
 watch(() => props.show, () => {
@@ -82,7 +87,6 @@ watch(() => props.show, () => {
         class="btn-group"
         @mouseenter="onMouseEnter"
         @mouseleave="onMouseLeave"
-        @pointermove="onMouseMove"
         :class="{ show: isMouseIn || show || isDrop }"
     >
         <div class="btn" @click="onBtnClick('¬')">¬</div>
