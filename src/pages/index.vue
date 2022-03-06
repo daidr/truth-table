@@ -1,18 +1,22 @@
 <script lang="ts" setup>
-import { ref, watch, reactive, computed, Ref } from 'vue';
+import { ref, watch, reactive, computed, Ref, nextTick } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useStore } from '@/store';
+import { useStore } from '../store';
 import antlr4 from 'antlr4';
 import { ErrorListener } from 'antlr4/src/antlr4/error';
-import LogicLexer from '@/utils/LogicLexer.js';
-import LogicParser from '@/utils/LogicParser.js';
-import LogicListener from '@/utils/LogicListener.js';
-import TruthTable from '@/components/TruthTable.vue';
+import LogicLexer from '../utils/LogicLexer.js';
+import LogicParser from '../utils/LogicParser.js';
+import LogicListener from '../utils/LogicListener.js';
+import TruthTable from '../components/TruthTable.vue';
+import { getCursorPosition, setCursorPosition } from '../utils/cursor';
+import FloatInputBtnGroup from '../components/FloatInputBtnGroup.vue';
 
 const { t } = useI18n();
 
 const store = useStore();
 
+const MainInputEl = ref();
+let currentInputPos = 0;
 const inputValue = ref('');
 
 const RawTokens = ref([]);
@@ -215,8 +219,12 @@ watch(
     if (oldVal != newVal) {
       errorMsg.value = '';
       try {
+        let pos = getCursorPosition(MainInputEl.value);
         inputValue.value = handleInputNotions(inputValue.value);
-        //if (inputValue.value.replace(/\s/g, '') == '') return;
+        nextTick(() => {
+          setCursorPosition(MainInputEl.value, pos);
+        });
+
         const chars = new antlr4.InputStream(
           inputValue.value.replace(/\s/g, ''),
         );
@@ -236,76 +244,99 @@ watch(
     }
   },
 );
+
+const isInputFocused = ref(false);
+
+const handleBlur = () => {
+  currentInputPos = getCursorPosition(MainInputEl.value);
+  isInputFocused.value = false;
+};
+
+const handleFocus = () => {
+  isInputFocused.value = true;
+};
+
+const onInputBtnClick = (char: string) => {
+  inputValue.value = inputValue.value.slice(0, currentInputPos) + char + inputValue.value.slice(currentInputPos);
+  setTimeout(() => {
+    MainInputEl.value.focus();
+    setCursorPosition(MainInputEl.value, currentInputPos + 1);
+  }, 10);
+};
 </script>
 
 <template>
   <div class="wrapper" :class="{ horizontal: store.$state.layoutHorizontal }">
     <div class="left">
       <input
+        ref="MainInputEl"
         v-model="inputValue"
         class="main-input"
         :placeholder="t('input.placeholder')"
+        @blur="handleBlur"
+        @focus="handleFocus"
       />
       <div
-        v-if="errorMsg != '' && inputValue.replace(/\s/g,'') != ''"
+        v-if="errorMsg != '' && inputValue.replace(/\s/g, '') != ''"
         class="inner-wrapper error-wrapper"
         :data-title="t('parser.error.title')"
       >
         <p v-if="errorMsg != 'handled error'">{{ errorMsg }}</p>
         <p v-else>{{ t(errorMsgData.text, errorMsgData.params) }}</p>
       </div>
-      <div
-        v-if="inDebugMode"
-        class="inner-wrapper"
-        :data-title="t('lexer.title')"
-      >
+      <div v-if="inDebugMode" class="inner-wrapper" :data-title="t('lexer.title')">
         <div class="scroll-wrapper text-sm">
-          <code
-            v-for="(rawToken, index) of RawTokens"
-            :key="index"
-            class="whitespace-pre"
-          >
+          <code v-for="(rawToken, index) of RawTokens" :key="index" class="whitespace-pre">
             {{ t('lexer.startpos') }}
             {{ rawToken.start.toString().padEnd(3) }}
             {{ t('lexer.stoppos') }} {{ rawToken.stop.toString().padEnd(3) }}
-            {{ t('lexer.type') }} {{ (rawToken.type==-1 ? 'EOF' : LogicParser.symbolicNames[rawToken.type]).padEnd(12) }}
+            {{ t('lexer.type') }}
+            {{
+              (rawToken.type == -1
+                ? 'EOF'
+                : LogicParser.symbolicNames[rawToken.type]
+              ).padEnd(12)
+            }}
             {{ t('lexer.value') }} {{ rawToken.text }}
             <br />
           </code>
         </div>
       </div>
-      <div
-        v-if="inDebugMode"
-        class="inner-wrapper"
-        :data-title="t('parser.title')"
-      >
+      <div v-if="inDebugMode" class="inner-wrapper" :data-title="t('parser.title')">
         <div class="scroll-wrapper">
-          <p class="used-variables">
+          <div class="used-variables">
             {{ t('parser.used-var') }}
-            <span v-if="usedVaribles.length == 0">{{
-              t('parser.used-var.empty')
-            }}</span>
-            <span v-for="variable of usedVaribles" :key="variable">{{
-              variable
-            }}</span>
-          </p>
-          <p class="used-subsequences">
+            <span v-if="usedVaribles.length == 0">
+              {{
+                t('parser.used-var.empty')
+              }}
+            </span>
+            <span v-for="variable of usedVaribles" :key="variable">
+              {{
+                variable
+              }}
+            </span>
+          </div>
+          <div class="used-subsequences">
             {{ t('parser.used-subsequence') }}
-            <span v-if="usedSubsequences.length == 0">{{
-              t('parser.used-var.empty')
-            }}</span>
-            <span v-for="subsequence of usedSubsequences" :key="subsequence">{{
-              subsequence
-            }}</span>
-          </p>
-          <p class="used-subsequences">
+            <span v-if="usedSubsequences.length == 0">
+              {{
+                t('parser.used-var.empty')
+              }}
+            </span>
+            <span v-for="subsequence of usedSubsequences" :key="subsequence">
+              {{
+                subsequence
+              }}
+            </span>
+          </div>
+          <div class="used-subsequences">
             {{ t('parser.tree') }}
-          <span v-if="!RawTree">&lt;EOF&gt;</span>
-          <ul v-if="RawTree">
-            <Tree :item="(RawTree as Tree).children[0]" />
-          </ul>
-          </p>
-          
+            <span v-if="!RawTree">EOF</span>
+            <ul v-if="RawTree">
+              <Tree :item="(RawTree as Tree).children[0]" />
+            </ul>
+          </div>
         </div>
       </div>
     </div>
@@ -323,6 +354,7 @@ watch(
         </div>
       </div>
     </div>
+    <FloatInputBtnGroup :show="isInputFocused" @input="onInputBtnClick" />
   </div>
 </template>
 
