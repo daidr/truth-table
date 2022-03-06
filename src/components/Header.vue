@@ -47,9 +47,7 @@ const store = useStore();
       >
         <Icon
           :icon="
-            store.$state.showIntermediateProcesses
-              ? 'uil:eye-slash'
-              : 'uil:eye'
+            store.$state.showIntermediateProcesses ? 'uil:eye' : 'uil:eye-slash'
           "
         />
       </a>
