@@ -35,7 +35,7 @@ const errorMsgData = ref({ text: '', params: {} });
 
 const handleInputNotions = (value: string): string => {
   return value
-    .replace(/[!！┐1]/g, '¬')
+    .replace(/[!！┐￢1]/g, '¬')
     .replace(/[》>.。]/g, '→')
     .replace(/[【{\[（]/g, '(')
     .replace(/[】}\]）]/g, ')')
