@@ -129,10 +129,10 @@ watch(() => props.show, () => {
 }
 
 .btn {
-    @apply flex flex-row w-auto flex-grow md:w-15 h-10 transition;
+    @apply flex flex-row w-auto flex-grow md:w-15 h-10 transition transform-gpu;
     @apply rounded-lg;
     @apply items-center justify-center cursor-pointer;
-    @apply bg-purple-300 bg-opacity-20;
+    @apply bg-purple-300 bg-opacity-20 dark:bg-gray-500/50;
     -webkit-tap-highlight-color: transparent;
 }
 
@@ -141,6 +141,6 @@ watch(() => props.show, () => {
 }
 
 .btn:active {
-    @apply bg-opacity-100 scale-75;
+    @apply bg-opacity-100 scale-90 dark:bg-gray-500;
 }
 </style>
