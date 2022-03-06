@@ -95,6 +95,11 @@ const toggle = () => {
 }
 
 ul {
-  @apply pl-8;
+  @apply pl-8 relative;
+}
+
+ul::after {
+  content: '';
+  @apply absolute top-0 left-5.5 bottom-0 w-0.5 bg-purple-300 dark:bg-gray-600;
 }
 </style>
