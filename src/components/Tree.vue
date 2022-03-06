@@ -2,10 +2,12 @@
 import { computed, PropType, ref } from 'vue';
 import { Icon } from '@iconify/vue';
 import { useI18n } from 'vue-i18n';
+import LogicParser from '../utils/LogicParser.js';
 
 const { t } = useI18n();
 
 interface Tree {
+  isErrorNode: Function;
   getText: Function;
   children?: Tree[];
 }
@@ -25,7 +27,7 @@ const isFolder = computed(
   () =>
     props.item.children &&
     props.item.children.length &&
-    props.item.constructor.name != 'VariableContext',
+    props.item.constructor != LogicParser.VariableContext,
 );
 const toggle = () => {
   if (isFolder.value) {
@@ -40,8 +42,8 @@ const toggle = () => {
       :class="{
         bold: isFolder,
         isError:
-          item.constructor.name == 'ErrorNodeImpl' ||
-          item.constructor.name == 'ExprContext',
+          (item.isErrorNode && item.isErrorNode()) ||
+          item.constructor == LogicParser.ExprContext,
       }"
       @click="toggle"
       class="tree-item"
@@ -50,7 +52,7 @@ const toggle = () => {
         <Icon icon="uil:angle-right-b" />
       </span>
       {{
-        item.constructor.name == 'ExprContext'
+        item.constructor == LogicParser.ExprContext
           ? `<${t('tree.unknown')}>`
           : item.getText()
       }}
