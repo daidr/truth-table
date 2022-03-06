@@ -115,9 +115,10 @@ const calcTruthTable = () => {
       usedSubsequences.includes(key),
   );
   if (keys.length != 0) {
-    subsequencesResult.value = keys.sort(
-      (a, b) => finalResult[0].values[a] - finalResult[0].values[b],
-    );
+    // subsequencesResult.value = keys.sort(
+    //   (a, b) => finalResult[0].values[a] - finalResult[0].values[b],
+    // );
+    subsequencesResult.value = keys;
   }
 };
 
