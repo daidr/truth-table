@@ -127,7 +127,7 @@ watch(() => props.show, () => {
 
 .btn-group.show {
     @apply opacity-100 pointer-events-auto;
-    @apply <md:(max-h-20 p-2);
+    @apply <md:(max-h-15 p-2);
 }
 
 .btn {
