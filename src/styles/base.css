@@ -6,6 +6,7 @@ body {
 
 * {
   @apply box-border;
+  -webkit-tap-highlight-color: transparent;
 }
 
 html,
@@ -13,4 +14,9 @@ body {
   -webkit-overflow-scrolling: touch !important;
   overflow: auto !important;
   height: 100% !important;
+}
+
+input,
+select {
+  outline: none !important;
 }

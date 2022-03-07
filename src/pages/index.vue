@@ -385,13 +385,23 @@ const onInputBtnClick = (char: string) => {
 
 .main-input-wrapper {
   @apply bg-purple-200 dark:bg-gray-800 rounded-xl overflow-hidden;
-  @apply transition;
+  @apply transition relative;
   @apply shadow-lg shadow-purple-500/10 dark:shadow-dark-900/20;
 }
 
 .main-input-wrapper:focus-within {
-  outline: 2px solid white;
   @apply shadow-xl shadow-purple-500/10 dark:shadow-dark-900/20;
+}
+
+.main-input-wrapper:focus-within::after {
+  @apply opacity-100;
+}
+
+.main-input-wrapper::after {
+  content: "";
+  @apply absolute top-0 left-0 right-0 bottom-0 rounded-xl;
+  @apply border-2 border-transparent border-white border-solid pointer-events-none;
+  @apply transition opacity-0;
 }
 
 .main-input {
@@ -401,7 +411,7 @@ const onInputBtnClick = (char: string) => {
 }
 
 .main-input::-webkit-input-placeholder {
-  @apply select-none;
+  @apply select-none <sm:text-base;
   @apply text-purple-600/50 dark:text-gray-50/50;
 }
 
@@ -446,7 +456,7 @@ const onInputBtnClick = (char: string) => {
 }
 
 .table-wrapper {
-  @apply px-4;
+  @apply px-3 md:px-4;
 }
 .table-wrapper .scroll-wrapper {
   @apply max-h-200 rounded-lg;

@@ -2,6 +2,9 @@
 import Header from './components/Header.vue';
 import Footer from './components/Footer.vue';
 import Pages from './pages/index.vue';
+import disableZoom from './utils/disableZoom';
+
+disableZoom();
 </script>
 
 <template>

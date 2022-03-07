@@ -131,11 +131,10 @@ watch(() => props.show, () => {
 }
 
 .btn {
-    @apply flex flex-row w-auto flex-grow md:w-15 h-10 transition transform-gpu;
+    @apply flex flex-row w-auto flex-shrink-0 flex-grow md:w-15 h-10 transition transform-gpu;
     @apply rounded-lg;
     @apply items-center justify-center cursor-pointer;
     @apply bg-purple-300 bg-opacity-20 dark:bg-gray-500/50;
-    -webkit-tap-highlight-color: transparent;
 }
 
 .btn:hover {
