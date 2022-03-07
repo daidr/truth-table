@@ -442,7 +442,7 @@ const onInputBtnClick = (char: string) => {
 
 .used-subsequences span,
 .used-variables span {
-  @apply bg-purple-300 dark:bg-dark-900 px-3 rounded-lg;
+  @apply bg-purple-300 dark:bg-gray-900 px-3 rounded-lg;
 }
 
 .table-wrapper {
