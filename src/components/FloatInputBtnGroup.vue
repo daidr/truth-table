@@ -63,7 +63,7 @@ const onMouseUp = () => {
 }
 
 onMounted(() => {
-    BtnGroupEl.value.style.top = window.innerHeight / 2 + 'px'
+    BtnGroupEl.value.style.top = window.innerHeight / 4 + 'px'
     BtnGroupEl.value.style.left = window.innerWidth / 4 + 'px'
     document.addEventListener("pointermove", onMouseMove)
 })
