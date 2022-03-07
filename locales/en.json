@@ -22,5 +22,6 @@
   "parser.used-subsequence": "Used Subsequences: ",
   "table.title": "Truth Table",
   "parser.tree": "AST Tree: ",
-  "tree.unknown": "UNKNOWN"
+  "tree.unknown": "UNKNOWN",
+  "footer.author": "daidr"
 }

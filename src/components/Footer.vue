@@ -1,6 +1,15 @@
+<script setup lang="ts">
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n()
+</script>
+
 <template>
   <footer>
-    <p>Coded By <a target="_blank" href="https://daidr.me">戴兜</a> With ❤️</p>
+    <p>
+      Coded By
+      <a target="_blank" href="https://daidr.me">{{ t('footer.author') }}</a> With ❤️
+    </p>
   </footer>
 </template>
 
@@ -12,7 +21,7 @@ footer {
 }
 
 a {
-  @apply px-2 py-0.5 rounded-md transition;
+  @apply px-1 py-0.5 rounded-md transition;
 }
 
 a:hover {
