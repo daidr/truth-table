@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, PropType, ref } from 'vue';
+import { computed, nextTick, PropType, ref, watch } from 'vue';
 import { Icon } from '@iconify/vue';
 import { useI18n } from 'vue-i18n';
 import LogicParser from '../utils/LogicParser.js';
@@ -34,6 +34,15 @@ const toggle = () => {
     isOpen.value = !isOpen.value;
   }
 };
+
+const refresh = ref(true)
+
+watch(() => props.item, () => {
+  refresh.value = false;
+  nextTick(() => {
+    refresh.value = true;
+  })
+})
 </script>
 
 <template>
@@ -57,14 +66,9 @@ const toggle = () => {
           : item.getText()
       }}
     </div>
-    <TransitionHeight v-if="isFolder" :show="isOpen">
+    <TransitionHeight v-if="isFolder && refresh" :show="isOpen">
       <ul>
-        <Tree
-          class="item"
-          v-for="(child, index) in item.children"
-          :key="index"
-          :item="child"
-        ></Tree>
+        <Tree class="item" v-for="(child, index) in item.children" :key="index" :item="child"></Tree>
       </ul>
     </TransitionHeight>
   </li>
@@ -102,7 +106,7 @@ ul {
 }
 
 ul::after {
-  content: '';
-  @apply absolute top-0 left-5.5 bottom-0 w-0.5 bg-purple-300 dark:bg-gray-600;
+  content: "";
+  @apply absolute top-0 left-5.5 bottom-0 w-0.5 bg-purple-300 dark:bg-gray-600 rounded-full;
 }
 </style>
