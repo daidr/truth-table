@@ -384,7 +384,7 @@ const onInputBtnClick = (char: string) => {
 }
 
 .main-input-wrapper {
-  @apply bg-purple-200 dark:bg-gray-800 rounded-xl;
+  @apply bg-purple-200 dark:bg-gray-800 rounded-xl overflow-hidden;
   @apply transition;
   @apply shadow-lg shadow-purple-500/10 dark:shadow-dark-900/20;
 }
