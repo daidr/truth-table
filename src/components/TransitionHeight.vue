@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { nextTick, onMounted, ref, watch } from 'vue';
 
 const TransitionWrapperEl = ref();

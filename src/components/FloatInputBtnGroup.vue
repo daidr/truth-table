@@ -31,12 +31,12 @@ let disX = 0;
 let disY = 0;
 
 const checkXY = (x: number, y: number) => {
-    let w = document.body.clientWidth;
-    let h = document.body.clientHeight;
+    let w = window.innerWidth;
+    let h = window.innerHeight;
     x = x < 30 ? 30 : x;
-    x = x > w - 420 ? w - 420 : x;
-    y = y < 20 ? 20 : y;
-    y = y > h - 30 ? h - 30 : y;
+    x = x > w - BtnGroupEl.value.clientWidth - 30 ? w - BtnGroupEl.value.clientWidth - 30 : x;
+    y = y < 30 ? 30 : y;
+    y = y > h - BtnGroupEl.value.clientHeight - 30 ? h - BtnGroupEl.value.clientHeight - 30 : y;
     return { x, y };
 }
 
@@ -94,6 +94,8 @@ watch(() => props.show, () => {
         <div class="btn" @click="onBtnClick('⋁')">⋁</div>
         <div class="btn" @click="onBtnClick('→')">→</div>
         <div class="btn" @click="onBtnClick('⇔')">⇔</div>
+        <div class="btn" @click="onBtnClick('(')">(</div>
+        <div class="btn" @click="onBtnClick(')')">)</div>
         <Icon
             icon="uil:draggabledots"
             class="cursor-move hidden md:block"
@@ -105,27 +107,27 @@ watch(() => props.show, () => {
 
 <style scoped>
 .btn-group {
-    @apply opacity-0 pointer-events-none transition z-99;
+    @apply opacity-0 pointer-events-none z-99;
     @apply touch-none;
-    @apply fixed bottom-0 left-0 right-0 md:(bottom-auto left-1/4 right-auto);
+    @apply static md:(fixed bottom-auto left-1/4 right-auto);
     @apply p-2 gap-x-2;
     @apply md:rounded-xl;
     @apply flex flex-row justify-around items-center select-none;
     @apply bg-purple-200 dark:bg-gray-800;
     @apply shadow-lg shadow-purple-500/10 dark:shadow-dark-900/20;
+
+    transition: opacity 0.15s cubic-bezier(0.4, 0, 0.2, 1),
+        max-height 0.15s cubic-bezier(0.4, 0, 0.2, 1),
+        padding 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-group {
+    @apply <md:(max-h-0 p-0);
 }
 
 .btn-group.show {
     @apply opacity-100 pointer-events-auto;
-}
-
-@media screen and (max-width: 768px) {
-    .btn-group {
-        bottom: 0 !important;
-        left: 0 !important;
-        right: 0 !important;
-        top: auto !important;
-    }
+    @apply <md:(max-h-20 p-2);
 }
 
 .btn {

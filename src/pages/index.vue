@@ -269,14 +269,17 @@ const onInputBtnClick = (char: string) => {
 <template>
   <div class="wrapper" :class="{ horizontal: store.$state.layoutHorizontal }">
     <div class="left">
-      <input
-        ref="MainInputEl"
-        v-model="inputValue"
-        class="main-input"
-        :placeholder="t('input.placeholder')"
-        @blur="handleBlur"
-        @focus="handleFocus"
-      />
+      <div class="main-input-wrapper">
+        <input
+          ref="MainInputEl"
+          v-model="inputValue"
+          class="main-input"
+          :placeholder="t('input.placeholder')"
+          @blur="handleBlur"
+          @focus="handleFocus"
+        />
+        <FloatInputBtnGroup :show="isInputFocused" @input="onInputBtnClick" />
+      </div>
       <div
         v-if="errorMsg != '' && inputValue.replace(/\s/g, '') != ''"
         class="inner-wrapper error-wrapper"
@@ -355,7 +358,6 @@ const onInputBtnClick = (char: string) => {
         </div>
       </div>
     </div>
-    <FloatInputBtnGroup :show="isInputFocused" @input="onInputBtnClick" />
   </div>
 </template>
 
@@ -381,20 +383,24 @@ const onInputBtnClick = (char: string) => {
   @apply lg:col-span-4;
 }
 
-.wrapper .main-input {
-  @apply outline-transparent;
-  @apply text-xl;
-  @apply w-full px-5 md:px-20 py-3 tracking-wider;
+.main-input-wrapper {
   @apply bg-purple-200 dark:bg-gray-800 rounded-xl;
   @apply transition;
   @apply shadow-lg shadow-purple-500/10 dark:shadow-dark-900/20;
 }
 
-.wrapper .main-input:focus {
+.main-input-wrapper:focus-within {
+  outline: 2px solid white;
   @apply shadow-xl shadow-purple-500/10 dark:shadow-dark-900/20;
 }
 
-.wrapper .main-input::-webkit-input-placeholder {
+.main-input {
+  outline: none !important;
+  @apply text-xl bg-transparent;
+  @apply w-full px-5 md:px-20 py-3 tracking-wider;
+}
+
+.main-input::-webkit-input-placeholder {
   @apply select-none;
   @apply text-purple-600/50 dark:text-gray-50/50;
 }
