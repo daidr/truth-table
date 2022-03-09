@@ -58,18 +58,22 @@ const onMouseMove = (e: PointerEvent) => {
 }
 
 const onMouseUp = () => {
-    isDrop.value = false;
-    onBtnClick('');
+    if (isDrop.value) {
+        isDrop.value = false;
+        onBtnClick('');
+    }
 }
 
 onMounted(() => {
     BtnGroupEl.value.style.top = window.innerHeight / 4 + 'px'
     BtnGroupEl.value.style.left = window.innerWidth / 4 + 'px'
     document.addEventListener("pointermove", onMouseMove)
+    document.addEventListener("pointerup", onMouseUp)
 })
 
 onUnmounted(() => {
     document.removeEventListener("pointermove", onMouseMove)
+    document.removeEventListener("pointerup", onMouseUp)
 })
 
 watch(() => props.show, () => {
@@ -96,12 +100,9 @@ watch(() => props.show, () => {
         <div class="btn" @click="onBtnClick('⇔')">⇔</div>
         <div class="btn" @click="onBtnClick('(')">(</div>
         <div class="btn" @click="onBtnClick(')')">)</div>
-        <Icon
-            icon="uil:draggabledots"
-            class="cursor-move hidden md:block"
-            @pointerdown="onMouseDown"
-            @pointerup="onMouseUp"
-        />
+        <div class="move-handle" @pointerdown="onMouseDown">
+            <Icon icon="uil:draggabledots" />
+        </div>
     </div>
 </template>
 
@@ -143,5 +144,10 @@ watch(() => props.show, () => {
 
 .btn:active {
     @apply bg-opacity-100 scale-90 dark:bg-gray-500;
+}
+
+.move-handle {
+    @apply cursor-move hidden md:flex;
+    @apply w-5 h-10 items-center justify-center;
 }
 </style>
