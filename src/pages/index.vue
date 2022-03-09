@@ -68,13 +68,11 @@ class CustomErrorListener extends ErrorListener {
   }
 
   syntaxError(recognizer, offendingSymbol, line, column, msg, e) {
-    setTimeout(() => {
-      errorMsg.value = 'handled error';
-      errorMsgData.value = {
-        text: 'parser.error.syntax',
-        params: { column, msg },
-      };
-    }, 10);
+    errorMsg.value = 'handled error';
+    errorMsgData.value = {
+      text: 'parser.error.syntax',
+      params: { column, msg },
+    };
   }
 }
 const errorListener = new CustomErrorListener();
@@ -139,8 +137,10 @@ class VariableCount extends LogicListener {
 
   exitProg(ctx) {
     if (ctx.getText() !== inputValue.value.replace(/\s/g, '')) {
-      errorMsg.value = 'handled error';
-      errorMsgData.value = { text: 'parser.error.notvaild', params: {} };
+      if (!errorMsg.value) {
+        errorMsg.value = 'handled error';
+        errorMsgData.value = { text: 'parser.error.notvaild', params: {} };
+      }
       return;
     }
     finalFunction = new Function('values', finalFunctionStr);
