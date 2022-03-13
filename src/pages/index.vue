@@ -9,7 +9,9 @@ import LogicParser from '../utils/LogicParser.js';
 import LogicListener from '../utils/LogicListener.js';
 import TruthTable from '../components/TruthTable.vue';
 import { getCursorPosition, setCursorPosition } from '../utils/cursor';
+import { pushHistory, removeAllHistory, removeHistory, historyArray } from '../utils/history';
 import FloatInputBtnGroup from '../components/FloatInputBtnGroup.vue';
+import { Icon } from '@iconify/vue';
 
 const { t } = useI18n();
 
@@ -117,6 +119,10 @@ const calcTruthTable = () => {
     //   (a, b) => finalResult[0].values[a] - finalResult[0].values[b],
     // );
     subsequencesResult.value = keys;
+  }
+
+  if (!errorMsg.value) {
+    pushHistory(handleInputNotions(inputValue.value).trim());
   }
 };
 
@@ -357,6 +363,19 @@ const onInputBtnClick = (char: string) => {
           />
         </div>
       </div>
+      <div
+        v-if="historyArray.length != 0"
+        class="inner-wrapper history-wrapper"
+        :data-title="t('history.title')"
+      >
+        <div class="remove-all-history-btn" @click="removeAllHistory">清空</div>
+        <div class="history-item" v-for="history, index of historyArray" :key="history">
+          <div @click="inputValue = history" class="history-item-content">{{ history }}</div>
+          <div class="history-remove-btn" @click="removeHistory(index)">
+            <Icon icon="uil:times" />
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -373,6 +392,7 @@ const onInputBtnClick = (char: string) => {
 
 .wrapper > .right {
   @apply col-span-12;
+  @apply flex flex-col gap-y-4;
 }
 
 .wrapper.horizontal > .left {
@@ -460,5 +480,54 @@ const onInputBtnClick = (char: string) => {
 }
 .table-wrapper .scroll-wrapper {
   @apply max-h-200 rounded-lg;
+}
+
+.history-wrapper {
+  @apply px-3 md:px-4 relative;
+  @apply flex flex-col gap-y-2;
+}
+
+.history-wrapper .remove-all-history-btn {
+  @apply absolute top-0 right-0;
+  @apply px-2 py-0.5;
+  @apply rounded-bl-md rounded-tr-xl select-none;
+  @apply bg-purple-300 dark:bg-gray-900 dark:opacity-90;
+  @apply cursor-pointer;
+  @apply transition;
+}
+
+.history-wrapper .remove-all-history-btn:hover {
+  @apply bg-purple-400/80 dark:bg-gray-600;
+}
+
+.history-wrapper .history-item {
+  @apply flex gap-x-2;
+}
+
+.history-wrapper .history-remove-btn,
+.history-wrapper .history-item-content {
+  @apply px-2 py-1;
+  @apply cursor-pointer;
+  @apply transition transform-gpu;
+  @apply rounded-lg select-none;
+  @apply bg-purple-300/50 dark:bg-gray-900 dark:opacity-90;
+}
+
+.history-wrapper .history-item-content {
+  @apply flex-grow;
+}
+
+.history-wrapper .history-remove-btn {
+  @apply flex items-center justify-center;
+}
+
+.history-wrapper .history-remove-btn:hover,
+.history-wrapper .history-item-content:hover {
+  @apply bg-purple-300/80 dark:bg-gray-600;
+}
+
+.history-wrapper .history-remove-btn:active,
+.history-wrapper .history-item-content:active {
+  @apply scale-95;
 }
 </style>

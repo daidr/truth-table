@@ -23,5 +23,6 @@
   "table.title": "真值表",
   "parser.tree": "AST 树：",
   "tree.unknown": "未知",
-  "footer.author": "戴兜"
+  "footer.author": "戴兜",
+  "history.title": "历史记录"
 }

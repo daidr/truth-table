@@ -23,5 +23,6 @@
   "table.title": "Truth Table",
   "parser.tree": "AST Tree: ",
   "tree.unknown": "UNKNOWN",
-  "footer.author": "daidr"
+  "footer.author": "daidr",
+  "history.title": "History"
 }
