@@ -365,12 +365,10 @@ const ConjunctiveNormalForm = ref([]);
 
 const calcNormalForm = () => {
   DisjunctiveNormalForm.value = []
-  console.log(finalResult)
   let input = inputValue.value.replace(/\s/g, '');
   let temp = [];
   let temp2 = [];
   for (let i = 0; i < finalResult.length; i++) {
-    console.log(finalResult[i])
     if (finalResult[i]['values'][input] === 1) {
       temp.push(i.toString(2).padStart(usedVaribles.value.length, '0'))
     } else {
