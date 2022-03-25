@@ -41,6 +41,7 @@ export default defineConfig({
       include: [resolve(__dirname, './locales/**')],
     }),
     VitePWA({
+      registerType: 'autoUpdate',
       includeAssets: [
         '/icons/android-chrome-192x192.png',
         '/icons/android-chrome-512x512.png',
