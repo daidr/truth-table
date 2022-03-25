@@ -50,7 +50,7 @@ const errorMsg = ref('');
 const errorMsgData = ref({ text: '', params: {} });
 
 // 用于将用户输入的一些替代符号和不合法空白符替换为正常的符号
-const handleInputNotions = (value: string): string => {
+const handleInputNotations = (value: string): string => {
   return value
     .replace(/[!！┐￢1]/g, '¬')
     .replace(/[》>.。]/g, '→')
@@ -146,8 +146,11 @@ const calcTruthTable = () => {
 
   // 推入历史记录
   if (!errorMsg.value) {
-    pushHistory(handleInputNotions(inputValue.value).trim());
+    pushHistory(handleInputNotations(inputValue.value).trim());
   }
+
+  // 计算析取/合取范式
+  calcNormalForm()
 };
 
 // parser树所使用的listener
@@ -302,7 +305,7 @@ watch(
         let pos = getCursorPosition(MainInputEl.value);
 
         // 过滤输入框内容
-        inputValue.value = handleInputNotions(inputValue.value);
+        inputValue.value = handleInputNotations(inputValue.value);
 
         // 保存输入框指针位置
         nextTick(() => {
@@ -356,6 +359,27 @@ const onInputBtnClick = (char: string) => {
     setCursorPosition(MainInputEl.value, currentInputPos + 1);
   }, 10);
 };
+
+const DisjunctiveNormalForm = ref([]);
+const ConjunctiveNormalForm = ref([]);
+
+const calcNormalForm = () => {
+  DisjunctiveNormalForm.value = []
+  console.log(finalResult)
+  let input = inputValue.value.replace(/\s/g, '');
+  let temp = [];
+  let temp2 = [];
+  for (let i = 0; i < finalResult.length; i++) {
+    console.log(finalResult[i])
+    if (finalResult[i]['values'][input] === 1) {
+      temp.push(i.toString(2).padStart(usedVaribles.value.length, '0'))
+    } else {
+      temp2.push(i.toString(2).padStart(usedVaribles.value.length, '0'))
+    }
+  }
+  DisjunctiveNormalForm.value = temp;
+  ConjunctiveNormalForm.value = temp2;
+}
 </script>
 
 <template>
@@ -379,6 +403,44 @@ const onInputBtnClick = (char: string) => {
       >
         <p v-if="errorMsg != 'handled error'">{{ errorMsg }}</p>
         <p v-else>{{ t(errorMsgData.text, errorMsgData.params) }}</p>
+      </div>
+      <div class="right">
+        <div
+          v-if="errorMsg == '' && inputValue.replace(/\s/g, '') != ''"
+          class="inner-wrapper property-wrapper"
+          :data-title="t('property.title')"
+        >
+          <div class="item">
+            <p class="label">{{ t('property.principal_disjunctive_normal_form') }}</p>
+            <div v-if="DisjunctiveNormalForm.length != 0" class="content">
+              <template v-for="item, index of DisjunctiveNormalForm" :key="item">
+                <span>
+                  <span class="content-tag">
+                    <span>m</span>
+                    <sub>{{ item }}</sub>
+                  </span>
+                  <span class="px-1">{{ index < DisjunctiveNormalForm.length - 1 ? '⋁' : '' }}</span>
+                </span>
+              </template>
+            </div>
+            <div v-else class="content">0 ({{ t('property.contradictory_formula') }})</div>
+          </div>
+          <div class="item">
+            <p class="label">{{ t('property.principal_conjunctive_normal_form') }}</p>
+            <div v-if="ConjunctiveNormalForm.length != 0" class="content">
+              <template v-for="item, index of ConjunctiveNormalForm" :key="item">
+                <span>
+                  <span class="content-tag">
+                    <span>M</span>
+                    <sub>{{ item }}</sub>
+                  </span>
+                  <span class="px-1">{{ index < ConjunctiveNormalForm.length - 1 ? '⋀' : '' }}</span>
+                </span>
+              </template>
+            </div>
+            <div v-else class="content">1 ({{ t('property.tautology') }})</div>
+          </div>
+        </div>
       </div>
       <div v-if="inDebugMode" class="inner-wrapper" :data-title="t('lexer.title')">
         <div class="scroll-wrapper text-sm">
@@ -559,6 +621,22 @@ const onInputBtnClick = (char: string) => {
 .used-subsequences span,
 .used-variables span {
   @apply bg-purple-300 dark:bg-gray-900 px-3 rounded-lg;
+}
+
+.property-wrapper {
+  @apply flex flex-col gap-y-4;
+}
+
+.property-wrapper .item .label {
+  @apply select-none mb-1 text-lg;
+}
+
+.property-wrapper .item .content {
+  @apply flex flex-wrap gap-y-1 ml-4;
+}
+
+.property-wrapper .item .content .content-tag {
+  @apply bg-purple-300 dark:bg-gray-900 py-0.5 px-3 rounded-lg;
 }
 
 .table-wrapper {

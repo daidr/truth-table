@@ -24,5 +24,10 @@
   "parser.tree": "AST 树：",
   "tree.unknown": "未知",
   "footer.author": "戴兜",
-  "history.title": "历史记录"
+  "history.title": "历史记录",
+  "property.title": "属性",
+  "property.principal_disjunctive_normal_form": "标准析取范式：",
+  "property.principal_conjunctive_normal_form": "标准合取范式：",
+  "property.tautology": "永真式",
+  "property.contradictory_formula": "永假式"
 }

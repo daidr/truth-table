@@ -24,5 +24,10 @@
   "parser.tree": "AST Tree: ",
   "tree.unknown": "UNKNOWN",
   "footer.author": "daidr",
-  "history.title": "History"
+  "history.title": "History",
+  "property.title": "Property",
+  "property.principal_disjunctive_normal_form": "Principal disjunctive normal form: ",
+  "property.principal_conjunctive_normal_form": "Principal conjunctive normal form: ",
+  "property.tautology": "Tautology",
+  "property.contradictory_formula": "Contradictory Formula"
 }
