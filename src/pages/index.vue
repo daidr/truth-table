@@ -402,42 +402,40 @@ const calcNormalForm = () => {
         <p v-if="errorMsg != 'handled error'">{{ errorMsg }}</p>
         <p v-else>{{ t(errorMsgData.text, errorMsgData.params) }}</p>
       </div>
-      <div class="right">
-        <div
-          v-if="errorMsg == '' && inputValue.replace(/\s/g, '') != ''"
-          class="inner-wrapper property-wrapper"
-          :data-title="t('property.title')"
-        >
-          <div class="item">
-            <p class="label">{{ t('property.principal_disjunctive_normal_form') }}</p>
-            <div v-if="DisjunctiveNormalForm.length != 0" class="content">
-              <template v-for="item, index of DisjunctiveNormalForm" :key="item">
-                <span>
-                  <span class="content-tag">
-                    <span>m</span>
-                    <sub>{{ item }}</sub>
-                  </span>
-                  <span class="px-1">{{ index < DisjunctiveNormalForm.length - 1 ? '⋁' : '' }}</span>
+      <div
+        v-if="errorMsg == '' && inputValue.replace(/\s/g, '') != ''"
+        class="inner-wrapper property-wrapper"
+        :data-title="t('property.title')"
+      >
+        <div class="item">
+          <p class="label">{{ t('property.principal_disjunctive_normal_form') }}</p>
+          <div v-if="DisjunctiveNormalForm.length != 0" class="content">
+            <template v-for="item, index of DisjunctiveNormalForm" :key="item">
+              <span>
+                <span class="content-tag">
+                  <span>m</span>
+                  <sub>{{ item }}</sub>
                 </span>
-              </template>
-            </div>
-            <div v-else class="content">0 ({{ t('property.contradictory_formula') }})</div>
+                <span class="px-1">{{ index < DisjunctiveNormalForm.length - 1 ? '⋁' : '' }}</span>
+              </span>
+            </template>
           </div>
-          <div class="item">
-            <p class="label">{{ t('property.principal_conjunctive_normal_form') }}</p>
-            <div v-if="ConjunctiveNormalForm.length != 0" class="content">
-              <template v-for="item, index of ConjunctiveNormalForm" :key="item">
-                <span>
-                  <span class="content-tag">
-                    <span>M</span>
-                    <sub>{{ item }}</sub>
-                  </span>
-                  <span class="px-1">{{ index < ConjunctiveNormalForm.length - 1 ? '⋀' : '' }}</span>
+          <div v-else class="content">0 ({{ t('property.contradictory_formula') }})</div>
+        </div>
+        <div class="item">
+          <p class="label">{{ t('property.principal_conjunctive_normal_form') }}</p>
+          <div v-if="ConjunctiveNormalForm.length != 0" class="content">
+            <template v-for="item, index of ConjunctiveNormalForm" :key="item">
+              <span>
+                <span class="content-tag">
+                  <span>M</span>
+                  <sub>{{ item }}</sub>
                 </span>
-              </template>
-            </div>
-            <div v-else class="content">1 ({{ t('property.tautology') }})</div>
+                <span class="px-1">{{ index < ConjunctiveNormalForm.length - 1 ? '⋀' : '' }}</span>
+              </span>
+            </template>
           </div>
+          <div v-else class="content">1 ({{ t('property.tautology') }})</div>
         </div>
       </div>
       <div v-if="inDebugMode" class="inner-wrapper" :data-title="t('lexer.title')">
