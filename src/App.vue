@@ -8,7 +8,7 @@ disableZoom();
 </script>
 
 <template>
-  <div class="container max-w-screen-2xl mx-auto min-h-95vh relative pb-10">
+  <div class="container max-w-screen-2xl mx-auto min-h-95vh relative pb-20">
     <Header />
     <Pages />
     <Footer />

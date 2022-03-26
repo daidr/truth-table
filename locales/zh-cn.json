@@ -29,5 +29,6 @@
   "property.principal_disjunctive_normal_form": "标准析取范式：",
   "property.principal_conjunctive_normal_form": "标准合取范式：",
   "property.tautology": "永真式",
-  "property.contradictory_formula": "永假式"
+  "property.contradictory_formula": "永假式",
+  "install.prompt": "安装应用"
 }
