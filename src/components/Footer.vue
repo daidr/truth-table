@@ -9,7 +9,11 @@ const installBtnEl = ref();
 const showInstall = ref(false);
 let installFunction = () => { };
 
-window.addEventListener('beforeinstallprompt', e => {
+type BeforeInstallPromptEvent = Event & {
+  prompt: (event?: Event) => void;
+};
+
+window.addEventListener('beforeinstallprompt', (e: BeforeInstallPromptEvent) => {
   if (window.matchMedia('(display-mode: standalone)').matches) {
     return e.preventDefault();
   } else {
