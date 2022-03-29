@@ -621,6 +621,7 @@ const calcNormalForm = () => {
 
 .property-wrapper {
   @apply flex flex-col gap-y-4;
+  @apply pb-5 md:pb-8;
 }
 
 .property-wrapper .item .label {
