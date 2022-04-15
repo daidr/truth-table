@@ -9,7 +9,12 @@ import LogicParser from '../utils/LogicParser.js';
 import LogicListener from '../utils/LogicListener.js';
 import TruthTable from '../components/TruthTable.vue';
 import { getCursorPosition, setCursorPosition } from '../utils/cursor';
-import { pushHistory, removeAllHistory, removeHistory, historyArray } from '../utils/history';
+import {
+  pushHistory,
+  removeAllHistory,
+  removeHistory,
+  historyArray,
+} from '../utils/history';
 import FloatInputBtnGroup from '../components/FloatInputBtnGroup.vue';
 import { Icon } from '@iconify/vue';
 
@@ -52,15 +57,15 @@ const errorMsgData = ref({ text: '', params: {} });
 // 用于将用户输入的一些替代符号和不合法空白符替换为正常的符号
 const handleInputNotations = (value: string): string => {
   return value
-    .replace(/[!！┐￢1]/g, '¬')
+    .replace(/[!！┐￢]/g, '¬')
     .replace(/[》>.。]/g, '→')
     .replace(/[【{\[（]/g, '(')
     .replace(/[】}\]）]/g, ')')
     .replace(/[=↔+]/g, '⇔')
-    .replace(/[&^∧67]/g, '⋀')
+    .replace(/[&^∧]/g, '⋀')
     .replace(/[|∨\\、]/g, '⋁')
     .replace(/\s{2,}/g, ' ')
-    .replace(/[^A-Za-z ¬→⇔⋀⋁()]/g, '')
+    .replace(/[^A-Za-z0-9 ¬→⇔⋀⋁()]/g, '')
     .trimStart();
 };
 
@@ -150,7 +155,7 @@ const calcTruthTable = () => {
   }
 
   // 计算析取/合取范式
-  calcNormalForm()
+  calcNormalForm();
 };
 
 // parser树所使用的listener
@@ -293,7 +298,6 @@ class VariableCount extends LogicListener {
 
 const variableCount = new VariableCount();
 
-
 // 监听输入框值的变化，实时执行指令
 watch(
   () => inputValue.value,
@@ -353,7 +357,10 @@ const handleFocus = () => {
 
 // 特殊符号悬浮窗按钮被按下
 const onInputBtnClick = (char: string) => {
-  inputValue.value = inputValue.value.slice(0, currentInputPos) + char + inputValue.value.slice(currentInputPos);
+  inputValue.value =
+    inputValue.value.slice(0, currentInputPos) +
+    char +
+    inputValue.value.slice(currentInputPos);
   setTimeout(() => {
     MainInputEl.value.focus();
     setCursorPosition(MainInputEl.value, currentInputPos + 1);
@@ -364,20 +371,20 @@ const DisjunctiveNormalForm = ref([]);
 const ConjunctiveNormalForm = ref([]);
 
 const calcNormalForm = () => {
-  DisjunctiveNormalForm.value = []
+  DisjunctiveNormalForm.value = [];
   let input = inputValue.value.replace(/\s/g, '');
   let temp = [];
   let temp2 = [];
   for (let i = 0; i < finalResult.length; i++) {
     if (finalResult[i]['values'][input] === 1) {
-      temp.push(i.toString(2).padStart(usedVaribles.value.length, '0'))
+      temp.push(i.toString(2).padStart(usedVaribles.value.length, '0'));
     } else {
-      temp2.push(i.toString(2).padStart(usedVaribles.value.length, '0'))
+      temp2.push(i.toString(2).padStart(usedVaribles.value.length, '0'));
     }
   }
   DisjunctiveNormalForm.value = temp;
   ConjunctiveNormalForm.value = temp2;
-}
+};
 </script>
 
 <template>
@@ -408,39 +415,63 @@ const calcNormalForm = () => {
         :data-title="t('property.title')"
       >
         <div class="item">
-          <p class="label">{{ t('property.principal_disjunctive_normal_form') }}</p>
+          <p class="label">
+            {{ t('property.principal_disjunctive_normal_form') }}
+          </p>
           <div v-if="DisjunctiveNormalForm.length != 0" class="content">
-            <template v-for="item, index of DisjunctiveNormalForm" :key="item">
+            <template
+              v-for="(item, index) of DisjunctiveNormalForm"
+              :key="item"
+            >
               <span>
                 <span class="content-tag">
                   <span>m</span>
                   <sub>{{ item }}</sub>
                 </span>
-                <span class="px-1">{{ index < DisjunctiveNormalForm.length - 1 ? '⋁' : '' }}</span>
+                <span class="px-1">{{
+                  index < DisjunctiveNormalForm.length - 1 ? '⋁' : ''
+                }}</span>
               </span>
             </template>
           </div>
-          <div v-else class="content">0 ({{ t('property.contradictory_formula') }})</div>
+          <div v-else class="content">
+            0 ({{ t('property.contradictory_formula') }})
+          </div>
         </div>
         <div class="item">
-          <p class="label">{{ t('property.principal_conjunctive_normal_form') }}</p>
+          <p class="label">
+            {{ t('property.principal_conjunctive_normal_form') }}
+          </p>
           <div v-if="ConjunctiveNormalForm.length != 0" class="content">
-            <template v-for="item, index of ConjunctiveNormalForm" :key="item">
+            <template
+              v-for="(item, index) of ConjunctiveNormalForm"
+              :key="item"
+            >
               <span>
                 <span class="content-tag">
                   <span>M</span>
                   <sub>{{ item }}</sub>
                 </span>
-                <span class="px-1">{{ index < ConjunctiveNormalForm.length - 1 ? '⋀' : '' }}</span>
+                <span class="px-1">{{
+                  index < ConjunctiveNormalForm.length - 1 ? '⋀' : ''
+                }}</span>
               </span>
             </template>
           </div>
           <div v-else class="content">1 ({{ t('property.tautology') }})</div>
         </div>
       </div>
-      <div v-if="inDebugMode" class="inner-wrapper" :data-title="t('lexer.title')">
+      <div
+        v-if="inDebugMode"
+        class="inner-wrapper"
+        :data-title="t('lexer.title')"
+      >
         <div class="scroll-wrapper text-sm">
-          <code v-for="(rawToken, index) of RawTokens" :key="index" class="whitespace-pre">
+          <code
+            v-for="(rawToken, index) of RawTokens"
+            :key="index"
+            class="whitespace-pre"
+          >
             {{ t('lexer.startpos') }}
             {{ rawToken.start.toString().padEnd(3) }}
             {{ t('lexer.stoppos') }} {{ rawToken.stop.toString().padEnd(3) }}
@@ -456,32 +487,28 @@ const calcNormalForm = () => {
           </code>
         </div>
       </div>
-      <div v-if="inDebugMode" class="inner-wrapper" :data-title="t('parser.title')">
+      <div
+        v-if="inDebugMode"
+        class="inner-wrapper"
+        :data-title="t('parser.title')"
+      >
         <div class="scroll-wrapper">
           <div class="used-variables">
             {{ t('parser.used-var') }}
             <span v-if="usedVaribles.length == 0">
-              {{
-                t('parser.used-var.empty')
-              }}
+              {{ t('parser.used-var.empty') }}
             </span>
             <span v-for="variable of usedVaribles" :key="variable">
-              {{
-                variable
-              }}
+              {{ variable }}
             </span>
           </div>
           <div class="used-subsequences">
             {{ t('parser.used-subsequence') }}
             <span v-if="usedSubsequences.length == 0">
-              {{
-                t('parser.used-var.empty')
-              }}
+              {{ t('parser.used-var.empty') }}
             </span>
             <span v-for="subsequence of usedSubsequences" :key="subsequence">
-              {{
-                subsequence
-              }}
+              {{ subsequence }}
             </span>
           </div>
           <div class="used-subsequences">
@@ -513,8 +540,14 @@ const calcNormalForm = () => {
         :data-title="t('history.title')"
       >
         <div class="remove-all-history-btn" @click="removeAllHistory">清空</div>
-        <div class="history-item" v-for="history, index of historyArray" :key="history">
-          <div @click="inputValue = history" class="history-item-content">{{ history }}</div>
+        <div
+          class="history-item"
+          v-for="(history, index) of historyArray"
+          :key="history"
+        >
+          <div @click="inputValue = history" class="history-item-content">
+            {{ history }}
+          </div>
           <div class="history-remove-btn" @click="removeHistory(index)">
             <Icon icon="uil:times" />
           </div>
@@ -562,7 +595,7 @@ const calcNormalForm = () => {
 }
 
 .main-input-wrapper::after {
-  content: "";
+  content: '';
   @apply absolute top-0 left-0 right-0 bottom-0 rounded-xl;
   @apply border-2 border-transparent border-white border-solid pointer-events-none;
   @apply transition opacity-0;
