@@ -13,7 +13,7 @@ expr:
 
 LEFT_PAR: '(';
 RIGHT_PAR: ')';
-VAR: [a-zA-Z]+[0-9]?;
+VAR: [a-zA-Z]+([0-9]+)?;
 REVERSE: '\u00AC';
 CONJUNCTION: '\u22C0';
 DISJUNCTION: '\u22C1';
