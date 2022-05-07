@@ -30,5 +30,6 @@
   "property.principal_conjunctive_normal_form": "Principal conjunctive normal form: ",
   "property.tautology": "Tautology",
   "property.contradictory_formula": "Contradictory Formula",
-  "install.prompt": "Install App"
+  "install.prompt": "Install App",
+  "history.clear": "Clear"
 }

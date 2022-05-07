@@ -539,7 +539,9 @@ const calcNormalForm = () => {
         class="inner-wrapper history-wrapper"
         :data-title="t('history.title')"
       >
-        <div class="remove-all-history-btn" @click="removeAllHistory">清空</div>
+        <div class="remove-all-history-btn" @click="removeAllHistory">
+          t('history.clear')
+        </div>
         <div
           class="history-item"
           v-for="(history, index) of historyArray"
