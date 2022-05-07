@@ -540,7 +540,7 @@ const calcNormalForm = () => {
         :data-title="t('history.title')"
       >
         <div class="remove-all-history-btn" @click="removeAllHistory">
-          t('history.clear')
+          {{ t('history.clear') }}
         </div>
         <div
           class="history-item"
