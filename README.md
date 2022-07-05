@@ -1,4 +1,4 @@
-<p align='center'><img width="100px" style="display:block; margin:0 auto;" src="./public/icons/apple-touch-icon.png" alt="Truth Table">
+<p align='center'><img width="100px" style="display:block; margin:0 auto;" src="https://cdn.jsdelivr.net/gh/daidr/truth-table@main/public/icons/android-chrome-192x192.png" alt="Truth Table">
 </p>
 
 # 真值表
@@ -81,3 +81,7 @@ yarn build
 ```
 
 构建的结果会输出到 `dist` 目录下
+
+## 为我投票
+
+<a href="https://www.producthunt.com/posts/truth-table?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-truth&#0045;table" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=349421&theme=light" alt="Truth&#0032;Table - Generate&#0032;corresponding&#0032;truth&#0032;table&#0032;from&#0032;logical&#0032;expression | Product Hunt" style="width: 250px; height: 54px;" width="250" height="54" /></a>
