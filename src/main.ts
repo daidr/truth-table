@@ -9,8 +9,12 @@ import './styles/base.css';
 // i18n
 import messages from '@intlify/vite-plugin-vue-i18n/messages';
 
+// 尝试从 localstorage或navigator.language中获取语言
+const lang = localStorage.getItem('lang') || navigator.language.toLowerCase();
+
 const i18n = createI18n({
-  locale: 'zh-cn',
+  locale: lang,
+  fallbackLocale: 'en',
   messages,
 });
 
