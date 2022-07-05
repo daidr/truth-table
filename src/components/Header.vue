@@ -3,9 +3,18 @@ import { useI18n } from 'vue-i18n';
 import { useTheme } from '@/composables';
 import { Icon } from '@iconify/vue';
 import { useStore } from '../store';
+import { watch } from 'vue';
 
 const { t, availableLocales, locale } = useI18n();
 const { toggleDark, isDark } = useTheme();
+
+// 监听 locale 改变，写入 localStorage
+watch(
+  () => locale.value,
+  () => {
+    localStorage.setItem('lang', locale.value);
+  },
+);
 
 const store = useStore();
 </script>
